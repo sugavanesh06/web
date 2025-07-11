@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tech Quiz</title>
+
+  
+  
+  <style>
+    body {
+
+      background-image: url(./images/maximalfocus-VT4rx775FT4-unsplash.jpg);
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #000;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      transition: background 0.5s ease-in-out;
+    }
+
+    .overlay {
+      background: #fff; /* White background for the MCQ box */
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      color: #000; /* Dark text inside overlay */
+    }
+
+    h1, h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .options .option {
+      margin: 10px 0;
+      font-size: 16px;
+      padding: 12px 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      text-align: left;
+      transition: 0.2s;
+      background: #f9f9f9;
+      color: #000;
+      user-select: none;
+    }
+
+    .option.selected {
+      background: rgba(0, 123, 255, 0.2);
+      border-color: #007BFF;
+    }
+
+    .option.correct {
+      background: rgba(40, 167, 69, 0.2);
+      border-color: #28a745;
+      color: #000;
+    }
+
+    .option.wrong {
+      background: rgba(220, 53, 69, 0.2);
+      border-color: #dc3545;
+      color: #000;
+    }
+
+    button {
+      margin: 20px 10px 0;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #007BFF;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 500px) {
+      .overlay {
+        padding: 20px;
+      }
+
+      h1, h2 {
+        font-size: 20px;
+      }
+
+      .option, button {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+     
+  <div class="overlay" id="app"></div>
+
+  <script>
+   
+    const quizData = [
+    { q: " What is a queue?", options: ["A type of array", "A linear data structure following LIFO", "A linear data structure following FIFO", " A tree structure"], correct: [ 3 ] },
+    { q: "Where does an element get inserted in a queue?", options: ["At the front", "At the middle", "At the rear", "Anywhere"], correct: [ 3 ] },
+    { q: "Which operation inserts an element in a queue?", options: ["Delete", "Remove", "Enqueue", "Dequeue"], correct: [ 3 ] },
+    { q: "Which are European capitWhat is the minimum number of queues required to implement a stack?", options: ["1", "2", "3", "cannot be done"], correct: [ 2] },
+    { q: "What happens to rear in a circular queue when it reaches the end of the array and another enqueue is performed?", options: ["It stays at the end", " It resets to 0", "It overflows", "It moves to front"], correct: [ 2] },
+    { q: "In a queue implemented with an array, if front == rear, then the queue is:", options: [" Full", "Empty", "Overflowed", "None of the above"], correct: [ 2 ] },
+    { q: "In a circular queue implemented using an array of size n, the condition for the queue to be full is:", options: ["front == rear", "(rear + 1) % n == front", "rear == n - 1", "front == -1"], correct: [ 2 ] },
+    { q: "If a circular queue has size n, and the front is at index 2, rear is at index 1, how many elements are there in the queue?", options: ["n - 1", "0", "1", "n-2"], correct: [ 1 ] },
+    { q: "Which of the following statements is true about a priority queue?", options: [" All elements are dequeued in the order of their insertion", "Elements are dequeued based on key values or priorities", "You can’t use heaps to implement them", "They only support enqueue"], correct: [ 2 ] },
+    { q: "What will happen if you try to remove an element from an empty queue?", options: ["It will insert a new element", "It will cause an overflow", "It will cause an underflow", "It will return zero"], correct: [ 3 ] },
+    
+
+
+
+
+
+    ];
+
+    let currentIndex = 0, selectedAnswers = new Set(), score = 0;
+    const app = document.getElementById('app');
+
+    function renderIntro() {
+      app.innerHTML = `
+        <h1>Welcome to the DSA Quiz</h1>
+        <p>Select the right answers from mutliple choices.</p>
+        <button onclick="startQuiz()">Start Quiz</button>
+      `;
+    }
+
+    function startQuiz() {
+      currentIndex = 0;
+      score = 0;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      selectedAnswers = new Set();
+      const current = quizData[currentIndex];
+
+      app.innerHTML = `
+        <h2>Q${currentIndex + 1}: ${current.q}</h2>
+        <div class="options" id="opts">
+          ${current.options.map((o, i) => `<div class="option" data-i="${i}">${o}</div>`).join('')}
+        </div>
+        <button id="submitBtn" disabled>Submit</button>
+        <button id="nextBtn" style="display:none;">Next</button>
+      `;
+
+      const optionEls = document.querySelectorAll('.option');
+      const submitBtn = document.getElementById('submitBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const correctSet = new Set(current.correct);
+
+      optionEls.forEach(el => {
+        el.addEventListener('click', () => {
+          const i = +el.dataset.i;
+          if (selectedAnswers.has(i)) {
+            selectedAnswers.delete(i);
+            el.classList.remove('selected');
+          } else {
+            selectedAnswers.add(i);
+            el.classList.add('selected');
+          }
+          submitBtn.disabled = selectedAnswers.size === 0;
+        });
+      });
+
+      submitBtn.addEventListener('click', () => {
+        if (selectedAnswers.size === correctSet.size &&
+          [...correctSet].every(i => selectedAnswers.has(i))) score++;
+
+        optionEls.forEach(el => {
+          const i = +el.dataset.i;
+          el.style.pointerEvents = 'none';
+          if (correctSet.has(i)) el.classList.add('correct');
+          else if (selectedAnswers.has(i)) el.classList.add('wrong');
+        });
+
+        submitBtn.style.display = 'none';
+        nextBtn.style.display = 'inline-block';
+      });
+
+      nextBtn.addEventListener('click', () => {
+        currentIndex++;
+        if (currentIndex < quizData.length) {
+          renderQuestion();
+        } else {
+          renderResult();
+        }
+      });
+    }
+
+    function renderResult() {
+      app.innerHTML = `
+        <h1>Quiz Complete!</h1>
+        <p>Your score: <strong>${score}</strong> / <strong>${quizData.length}</strong></p>
+        <button onclick="renderIntro()">Restart Quiz</button>
+      `;
+    }
+
+    renderIntro();
+  </script>
+</body>
+</html>
