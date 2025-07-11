@@ -112,15 +112,15 @@
    
     const quizData = [
     { q: " What is a queue?", options: ["A type of array", "A linear data structure following LIFO", "A linear data structure following FIFO", " A tree structure"], correct: [ 3 ] },
-    { q: "Where does an element get inserted in a queue?", options: ["At the front", "At the middle", "At the rear", "Anywhere"], correct: [ 3 ] },
+    { q: "Where does an element get inserted in a queue?", options: ["At the rear", "At the middle", "At the front", "Anywhere"], correct: [ 1 ] },
     { q: "Which operation inserts an element in a queue?", options: ["Delete", "Remove", "Enqueue", "Dequeue"], correct: [ 3 ] },
-    { q: "Which are European capitWhat is the minimum number of queues required to implement a stack?", options: ["1", "2", "3", "cannot be done"], correct: [ 2] },
+    { q: "which queue operation can result in underflow?", options: ["Enqueue", "Reset", "Peek", "Dequeue"], correct: [ 4] },
     { q: "What happens to rear in a circular queue when it reaches the end of the array and another enqueue is performed?", options: ["It stays at the end", " It resets to 0", "It overflows", "It moves to front"], correct: [ 2] },
-    { q: "In a queue implemented with an array, if front == rear, then the queue is:", options: [" Full", "Empty", "Overflowed", "None of the above"], correct: [ 2 ] },
-    { q: "In a circular queue implemented using an array of size n, the condition for the queue to be full is:", options: ["front == rear", "(rear + 1) % n == front", "rear == n - 1", "front == -1"], correct: [ 2 ] },
-    { q: "If a circular queue has size n, and the front is at index 2, rear is at index 1, how many elements are there in the queue?", options: ["n - 1", "0", "1", "n-2"], correct: [ 1 ] },
-    { q: "Which of the following statements is true about a priority queue?", options: [" All elements are dequeued in the order of their insertion", "Elements are dequeued based on key values or priorities", "You can’t use heaps to implement them", "They only support enqueue"], correct: [ 2 ] },
-    { q: "What will happen if you try to remove an element from an empty queue?", options: ["It will insert a new element", "It will cause an overflow", "It will cause an underflow", "It will return zero"], correct: [ 3 ] },
+    { q: "Which of the following real-world examples best illustrates a circular queue?", options: ["Books on a bookshelf", "People waiting in a line", "CPU scheduling", "Call stack in recursion"], correct: [ 3 ] },
+    { q: "In a circular queue implemented using an array of size n, the condition for the queue to be full is:", options: ["(rear + 1) % n == front", "front == -1", "rear == n - 1", "front == rear"], correct: [ 1 ] },
+    { q: "If a circular queue has size n, and the front is at index 2, rear is at index 1, how many elements are there in the queue?", options: ["n - 2", "0", "1", "n - 1"], correct: [ 4 ] },
+    { q: "what is the time complexity of checking if a queue is empty?", options: ["O(n)", "O(1)", "O(log n)", "O(n log n)"], correct: [ 2 ] },
+    { q: "In a circular queue of size 6, if front = 3 and rear = 2,how many elements are currently in the queue?", options: ["0", "4", "6", "5"], correct: [ 4 ] },
     
 
 
